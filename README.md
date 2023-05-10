@@ -49,3 +49,5 @@ To install the service on your agents :
   - The period between saves is a time in hours that will allow the service to create a ".bak" file next to data file to don't lose your last data.
 
     > _Example : if you put it to 5, it will create/update the backup file every 5 hours._
+
+- Click on install and check start the service at the end. And yes, that's all :-)
