@@ -36,7 +36,7 @@ To install the service on your agents :
   <img src="https://i.postimg.cc/VsXYPhJH/Capture-d-cran-du-2023-05-10-11-33-16.png" alt="Config Page"/>
 </p>
 
-- configuration :
+- Configuration :
 
   - The period between collecting information is a time in seconds that will allow the service to start colecting information.
 
