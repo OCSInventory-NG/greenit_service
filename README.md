@@ -44,10 +44,20 @@ To install the service on your agents :
 
   - The period between upload is a time in minutes that will allow the service to write information collected into the data file _(C:\\ProgramData\GreenIT\data.json)_
 
-    > _NOTE : "C:\\ProgramData" is an unvisible folder._ > _Example : if you put it to 5, it will write information into data file every 5 minutes._
+    > _Example : if you put it to 5, it will write information into data file every 5 minutes._
+
+    > _NOTE : "C:\\ProgramData" is an unvisible folder._
 
   - The period between saves is a time in hours that will allow the service to create a ".bak" file next to data file to don't lose your last data.
 
     > _Example : if you put it to 5, it will create/update the backup file every 5 hours._
 
-- Click on install and check start the service at the end. And yes, that's all :-)
+- Click on install and don't forget to check "Run GreenIT Service 1.0" at the end.
+
+> _IMPORTANT NOTE : It is important to check "Run GreenIT Service 1.0" to install the software as a Windows service !_
+
+- If you havn't checked the box, you can install it manually after the install of the software :
+  - Open a terminal and go in the software installation folder path.
+  - Run the command `.\GreenIT.exe install` and wait until the plugin is installed.
+
+And yes, that's all :-)
