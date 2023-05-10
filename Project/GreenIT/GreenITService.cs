@@ -175,10 +175,13 @@ namespace GreenIT.Service
 
                 List<string> lines = new();
                 Match lineMatch;
-                JsonObject data = OpenHardwareMonitorModel.GetConsumption();
+                JsonObject consumption = OpenHardwareMonitorModel.GetConsumption();
+                JsonObject data = new();
+                data.Add("CONSUMPTION", "0");
+                data.Add("UPTIME", "0");
                 string regex = @"""(?<DATE>" + DateTime.Now.ToString("yyyy-MM-dd") + @")"": {""CONSUMPTION"":""(?<CONSUMPTION>[\s\S]+?)"",""UPTIME"":""(?<UPTIME>[0-9]+)""},";
 
-                if (data != null)
+                if (consumption != null)
                 {
                     if (File.Exists(_dataFilePath))
                     {
@@ -190,22 +193,30 @@ namespace GreenIT.Service
                         }
                     }
 
-                    Console.WriteLine("Check 2");
-
                     for (int i = 0; i < lines.Count; i++)
                     {
                         lineMatch = Regex.Match(lines[i], regex);
                         if (lineMatch.Groups["DATE"].ToString() == DateTime.Now.Date.ToString("yyyy-MM-dd"))
                         {
-                            Console.WriteLine("Check 3");
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                            if ((data["CONSUMPTION"].ToString() == "VM detected") || (lineMatch.Groups["CONSUMPTION"].ToString() == "VM detected"))
+                            string oldConsumption = lineMatch.Groups["CONSUMPTION"].ToString();
+                            if (consumption["DATE"].ToString() != DateTime.Now.ToString("yyyy-MM-dd")) consumption["EXIST"] = false;
+
+                            if (consumption["EXIST"].GetValue<bool>() == false)
+                            {
+                                consumption["EXIST"] = true;
+                                if (consumption["DATE"].ToString() != DateTime.Now.ToString("yyyy-MM-dd"))
+                                {
+                                    oldConsumption = "0";
+                                }
+                                else consumption["CONSUMPTION"] = int.Parse(lineMatch.Groups["UPTIME"].Value);
+                            }
+
+                            if ((consumption["CONSUMPTION"].ToString() == "VM detected") || (oldConsumption == "VM detected"))
                             {
                                 data["CONSUMPTION"] = "VM detected";
                             }
-                            else data["CONSUMPTION"] = (float.Parse(lineMatch.Groups["CONSUMPTION"].Value) + float.Parse(data["CONSUMPTION"].ToString()) * int.Parse(_config["COLLECT_INFO_PERIOD"].ToString()) / 3600).ToString();
-
-                            Console.WriteLine("Check 4");
+                            else data["CONSUMPTION"] = (float.Parse(oldConsumption) + float.Parse(consumption["CONSUMPTION"].ToString()) * int.Parse(_config["COLLECT_INFO_PERIOD"].ToString()) / 3600).ToString();
 
                             if (uptime["DATE"].ToString() != DateTime.Now.ToString("yyyy-MM-dd")) uptime["EXIST"] = false;
 

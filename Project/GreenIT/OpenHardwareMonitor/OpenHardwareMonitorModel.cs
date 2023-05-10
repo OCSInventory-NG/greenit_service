@@ -21,8 +21,13 @@ namespace GreenIT.OpenHardwareMonitor
                     {
                         if ((_computer.Hardware[i].Sensors[j].SensorType == SensorType.Power) && (_computer.Hardware[i].Sensors[j].Name == "Package Power"))
                         {
+                            consumption.Add("EXIST", true);
+                            consumption.Add("DATE", DateTime.Now.ToString("yyyy-MM-dd"));
                             if (_computer.Hardware[i].Sensors[j].Value > 50000) consumption.Add("CONSUMPTION", "VM detected");
-                            else consumption.Add("CONSUMPTION", _computer.Hardware[i].Sensors[j].Value.ToString());
+                            else
+                            {
+                                consumption.Add("CONSUMPTION", _computer.Hardware[i].Sensors[j].Value.ToString());
+                            }
                         }
                     }
                 }
