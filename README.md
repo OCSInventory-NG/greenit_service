@@ -56,7 +56,7 @@ To install the service on your agents :
 
 > _IMPORTANT NOTE : It is important to check "Run GreenIT Service 1.0" to install the software as a Windows service !_
 
-- If you havn't checked the box, you can install it manually after the install of the software :
+- If you haven't checked the box, you can install it manually after the install of the software :
   - Open a terminal and go in the software installation folder path.
   - Run the command `.\GreenIT.exe install` and wait until the plugin is installed.
 
