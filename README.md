@@ -7,9 +7,9 @@
 <h1 align="center">Service GreenIT</h1>
 <p align="center">
   <b>Some Links :</b><br>
-  <a href="https://ask.ocsinventory-ng.org">Ask question</a> |
-  <a href="https://www.ocsinventory-ng.org/?utm_source=github-ocs">Website</a> |
-  <a href="https://www.ocsinventory-ng.org/en/#ocs-pro-en">OCS Professional</a>
+  <a href="https://ask.ocsinventory-ng.org" target="_blank">Ask question</a> |
+  <a href="https://www.ocsinventory-ng.org/?utm_source=github-ocs" target="_blank">Website</a> |
+  <a href="https://www.ocsinventory-ng.org/en/#ocs-pro-en" target="_blank">OCS Professional</a>
 </p>
 
 ## Description
@@ -28,6 +28,24 @@ Currently supported on Windows, this service is made to retrieve gather power co
 
 To install the service on your agents :
 
-- Download the service <a href="https://github.com/Atineon/ocsinventory-service_greenit/releases/" target="_blank">here</a> to get the executable.
+- Download the service <a href="https://github.com/Atineon/ocsinventory-service_greenit/releases/" target="_blank">here</a> to get the executable and start it.
 
--
+- Go to the config page :
+
+<p align="center">
+  <img src="https://i.postimg.cc/VsXYPhJH/Capture-d-cran-du-2023-05-10-11-33-16.png" alt="Config Page"/>
+</p>
+
+- configuration :
+
+  - The period between collecting information is a time in seconds that will allow the service to start colecting information.
+
+    > _Example : if you put it to 5, it will collect information every 5 seconds._
+
+  - The period between upload is a time in minutes that will allow the service to write information collected into the data file _(C:\\ProgramData\GreenIT\data.json)_
+
+    > _NOTE : "C:\\ProgramData" is an unvisible folder._ > _Example : if you put it to 5, it will write information into data file every 5 minutes._
+
+  - The period between saves is a time in hours that will allow the service to create a ".bak" file next to data file to don't lose your last data.
+
+    > _Example : if you put it to 5, it will create/update the backup file every 5 hours._
