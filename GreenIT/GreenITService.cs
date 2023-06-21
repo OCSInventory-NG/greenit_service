@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace GreenIT.Service
 {
@@ -216,7 +217,7 @@ namespace GreenIT.Service
                             {
                                 data["CONSUMPTION"] = "VM detected";
                             }
-                            else data["CONSUMPTION"] = (float.Parse(oldConsumption) + float.Parse(consumption["CONSUMPTION"].ToString()) * int.Parse(_config["COLLECT_INFO_PERIOD"].ToString()) / 3600).ToString();
+                            else data["CONSUMPTION"] = (float.Parse(oldConsumption, CultureInfo.InvariantCulture) + float.Parse(consumption["CONSUMPTION"].ToString(), CultureInfo.InvariantCulture) * int.Parse(_config["COLLECT_INFO_PERIOD"].ToString()) / 3600).ToString(CultureInfo.InvariantCulture);
 
                             if (uptime["DATE"].ToString() != DateTime.Now.ToString("yyyy-MM-dd")) uptime["EXIST"] = false;
 
