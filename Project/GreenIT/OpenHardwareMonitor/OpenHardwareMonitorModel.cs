@@ -26,7 +26,7 @@ namespace GreenIT.OpenHardwareMonitor
                             if (_computer.Hardware[i].Sensors[j].Value > 50000) consumption.Add("CONSUMPTION", "VM detected");
                             else
                             {
-                                consumption.Add("CONSUMPTION", _computer.Hardware[i].Sensors[j].Value.ToString());
+                                consumption.Add("CONSUMPTION", _computer.Hardware[i].Sensors[j].Value.ToString().Replace(',', '.'));
                             }
                         }
                     }
