@@ -136,7 +136,7 @@ Function ConfigPage
 	${NSD_CreateLabel} 5% 50% 45% 10u "Period between uploads (in minutes) :"
 	Pop $UPLOAD_PERIOD_Label
 
-	${NSD_CreateNumber} 65% 50% 20% 12u "1"
+	${NSD_CreateNumber} 65% 50% 20% 12u "0"
 	Pop $UPLOAD_PERIOD
 	${NSD_Edit_SetTextLimit} $UPLOAD_PERIOD 4
 	
