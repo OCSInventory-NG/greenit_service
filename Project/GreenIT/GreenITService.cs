@@ -1,12 +1,9 @@
 ﻿using GreenIT.OpenHardwareMonitor;
-using Microsoft.Win32;
 using System.ComponentModel;
-using System.Security.Cryptography.X509Certificates;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using System.Globalization;
 
 namespace GreenIT.Service
 {
@@ -86,7 +83,7 @@ namespace GreenIT.Service
 
             if (File.Exists(_dataSavePath))
             {
-                if(!File.ReadAllBytes(_dataFilePath).SequenceEqual(File.ReadAllBytes(_dataSavePath)))
+                if (!File.ReadAllBytes(_dataFilePath).SequenceEqual(File.ReadAllBytes(_dataSavePath)))
                 {
                     File.Delete(_dataFilePath);
                     File.Copy(_dataSavePath, _dataFilePath);
@@ -287,7 +284,7 @@ namespace GreenIT.Service
                 ) Thread.Sleep(1000);
             Thread.Sleep(1000);
 
-            if(File.Exists(_dataFilePath))
+            if (File.Exists(_dataFilePath))
             {
                 if (File.Exists(_dataSavePath)) File.Delete(_dataSavePath);
                 File.Copy(_dataFilePath, _dataSavePath);
