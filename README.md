@@ -65,6 +65,4 @@ And yes, that's all :-)
 
 ## For developers
 
-We made the project on Visual Studio Community 2022 version 17.5.0 on windows 10 Pro x64 (22H2) distribution.
-
-> _IMPORTANT NOTE : It is important to check ".NET desktop development" and ".NET framework 6.0" at the installation to don't have any problem when you are working on the project !_
+All the documentation for developers can be found [here](https://github.com/OCSInventory-NG/Wiki/tree/master/english/04.Management-console-and-its-advanced-features/GreenIT-service-developers.md)
