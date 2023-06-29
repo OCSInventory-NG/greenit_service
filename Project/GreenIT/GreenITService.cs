@@ -15,15 +15,15 @@ namespace GreenIT.Service
         private bool _openHardwareMonitorEngine = false;
         private bool _stopEngineSignal = false;
 
-        private Mutex _mutex;
+        private readonly Mutex _mutex;
         private readonly BackgroundWorker _service;
         private readonly BackgroundWorker _save;
         private readonly BackgroundWorker _openHardwareMonitor;
 
-        private string _folderPath = @"C:\ProgramData\GreenIT";
-        private string _dataFilePath = @"C:\ProgramData\GreenIT\data.json";
-        private string _dataSavePath = @"C:\ProgramData\GreenIT\data.json.bak";
-        private string _configPath = @"config.json";
+        private readonly string _folderPath = @"C:\ProgramData\GreenIT";
+        private readonly string _dataFilePath = @"C:\ProgramData\GreenIT\data.json";
+        private readonly string _dataSavePath = @"C:\ProgramData\GreenIT\data.json.bak";
+        private readonly string _configPath = @"config.json";
 
         private string[]? _reader;
 
@@ -71,15 +71,10 @@ namespace GreenIT.Service
                 JsonString += line;
             }
 
-#pragma warning disable CS8601 // Possible null reference assignment.
             _config = JsonSerializer.Deserialize<JsonObject>(JsonString);
-#pragma warning restore CS8601 // Possible null reference assignment.
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             if (int.Parse(_config["COLLECT_INFO_PERIOD"].ToString()) == 0) _config["COLLECT_INFO_PERIOD"] = 1;
             if (int.Parse(_config["SAVE_INFO_PERIOD"].ToString()) == 0) _config["SAVE_INFO_PERIOD"] = 1;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
 
             if (File.Exists(_dataSavePath))
             {
@@ -135,9 +130,7 @@ namespace GreenIT.Service
 
             while (_stopEngineSignal == false)
             {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 Thread.Sleep(int.Parse(_config["SAVE_INFO_PERIOD"].ToString()) * 1000 * 3600);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 _mutex.WaitOne();
 
@@ -158,13 +151,13 @@ namespace GreenIT.Service
             while (_allEngineState != true) Thread.Sleep(100);
             Thread.Sleep(500);
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             DateTime uploadTime = DateTime.Now.AddMinutes(int.Parse(_config["UPLOAD_PERIOD"].ToString()));
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-            JsonObject uptime = new();
-            uptime.Add("EXIST", false);
-            uptime.Add("DATE", DateTime.Now.ToString("yyyy-MM-dd"));
-            uptime.Add("VALUE", 0);
+            JsonObject uptime = new()
+            {
+                { "EXIST", false },
+                { "DATE", DateTime.Now.ToString("yyyy-MM-dd") },
+                { "VALUE", 0 }
+            };
 
             while (_stopEngineSignal == false)
             {
@@ -174,9 +167,11 @@ namespace GreenIT.Service
                 List<string> lines = new();
                 Match lineMatch;
                 JsonObject consumption = OpenHardwareMonitorModel.GetConsumption();
-                JsonObject data = new();
-                data.Add("CONSUMPTION", "0");
-                data.Add("UPTIME", "0");
+                JsonObject data = new()
+                {
+                    { "CONSUMPTION", "0" },
+                    { "UPTIME", "0" }
+                };
                 string regex = @"""(?<DATE>" + DateTime.Now.ToString("yyyy-MM-dd") + @")"": {""CONSUMPTION"":""(?<CONSUMPTION>[\s\S]+?)"",""UPTIME"":""(?<UPTIME>[0-9]+)""},";
 
                 if (consumption != null)
@@ -196,7 +191,6 @@ namespace GreenIT.Service
                         lineMatch = Regex.Match(lines[i], regex);
                         if (lineMatch.Groups["DATE"].ToString() == DateTime.Now.Date.ToString("yyyy-MM-dd"))
                         {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                             string oldConsumption = lineMatch.Groups["CONSUMPTION"].ToString();
                             if (consumption["DATE"].ToString() != DateTime.Now.ToString("yyyy-MM-dd")) consumption["EXIST"] = false;
 
@@ -232,7 +226,6 @@ namespace GreenIT.Service
                         }
                     }
                     data["UPTIME"] = (int.Parse(uptime["VALUE"].ToString()) + (new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds() - _timestamp)).ToString();
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                     if (DateTime.Now >= uploadTime)
                     {
@@ -257,14 +250,10 @@ namespace GreenIT.Service
                         {
                             Console.WriteLine("[ERROR] " + DateTime.Now.ToString() + ": Data folder doesn't exist" + "\r");
                         }
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                         uploadTime = DateTime.Now.AddMinutes(int.Parse(_config["UPLOAD_PERIOD"].ToString()));
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
                     }
                     _mutex.ReleaseMutex();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                     Thread.Sleep(int.Parse(_config["COLLECT_INFO_PERIOD"].ToString()) * 1000);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 }
             }
             _openHardwareMonitorEngine = false;
