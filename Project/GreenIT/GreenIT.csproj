@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>GreenIT.GreenITMain</StartupObject>
-    <ApplicationIcon>ocs-icon.ico</ApplicationIcon>
+    <ApplicationIcon>greenit.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,7 +22,7 @@
     <Content Include="config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ocs-icon.ico" />
+    <Content Include="greenit.ico" />
   </ItemGroup>
 
   <ItemGroup>
