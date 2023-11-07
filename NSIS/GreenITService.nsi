@@ -15,8 +15,8 @@ SetCompressor lzma
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
-!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
+!define MUI_ICON "greenit.ico"
+!define MUI_UNICON "greenit.ico"
 
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
