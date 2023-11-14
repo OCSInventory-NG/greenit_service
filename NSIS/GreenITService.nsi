@@ -204,6 +204,7 @@ end:
 FunctionEnd
 
 Function InstallService
+         IfSilent 0 +24
          Call GetParameters
          Exch $R0
          ${GetOptions} $R0 "/collectPeriod" $R1
@@ -317,12 +318,11 @@ Function ConfigPageLeave
 FunctionEnd
 
 Function UploadConfig
-         IfSilent 0 +9
+         IfSilent 0 +19
          Call GetParameters
          Exch $R0
          ${GetOptions} $R0 "/collectPeriod=" $R1
          StrCpy $0 $R1
-         MessageBox MB_OK $R1
          ${GetOptions} $R0 "/collectPeriod=" $R1
          StrCpy $1 $R1
          ${GetOptions} $R0 "/collectPeriod=" $R1
