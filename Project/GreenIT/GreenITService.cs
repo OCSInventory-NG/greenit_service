@@ -1,4 +1,4 @@
-﻿using GreenIT.OpenHardwareMonitor;
+﻿using GreenIT.LibreHardwareMonitor;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.Json;
@@ -12,13 +12,13 @@ namespace GreenIT.Service
         private bool _allEngineState = false;
         private bool _serviceEngine = false;
         private bool _saveEngine = false;
-        private bool _openHardwareMonitorEngine = false;
+        private bool _LibreHardwareMonitorEngine = false;
         private bool _stopEngineSignal = false;
 
         private readonly Mutex _mutex;
         private readonly BackgroundWorker _service;
         private readonly BackgroundWorker _save;
-        private readonly BackgroundWorker _openHardwareMonitor;
+        private readonly BackgroundWorker _LibreHardwareMonitor;
 
         private readonly string _folderPath = @"C:\ProgramData\GreenIT";
         private readonly string _dataFilePath = @"C:\ProgramData\GreenIT\data.json";
@@ -49,11 +49,11 @@ namespace GreenIT.Service
             };
             _save.DoWork += SaveEngine;
 
-            _openHardwareMonitor = new BackgroundWorker
+            _LibreHardwareMonitor = new BackgroundWorker
             {
                 WorkerSupportsCancellation = true
             };
-            _openHardwareMonitor.DoWork += OpenHardwareMonitorEngine;
+            _LibreHardwareMonitor.DoWork += LibreHardwareMonitorEngine;
 
             _timestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
         }
@@ -88,11 +88,11 @@ namespace GreenIT.Service
             Console.WriteLine("[INFO] " + DateTime.Now.ToString() + ": Starting engines..." + "\r");
             _service.RunWorkerAsync();
             _save.RunWorkerAsync();
-            _openHardwareMonitor.RunWorkerAsync();
+            _LibreHardwareMonitor.RunWorkerAsync();
             while (
                 (_serviceEngine != true) &&
                 (_saveEngine != true) &&
-                (_openHardwareMonitorEngine != true)
+                (_LibreHardwareMonitorEngine != true)
                 ) Thread.Sleep(1000);
 
             _allEngineState = true;
@@ -144,10 +144,10 @@ namespace GreenIT.Service
             _saveEngine = false;
         }
 
-        public void OpenHardwareMonitorEngine(object? sender, DoWorkEventArgs e)
+        public void LibreHardwareMonitorEngine(object? sender, DoWorkEventArgs e)
         {
-            Console.WriteLine("[INFO] " + DateTime.Now.ToString() + ": OpenHardwareMonitor engine started" + "\r");
-            _openHardwareMonitorEngine = true;
+            Console.WriteLine("[INFO] " + DateTime.Now.ToString() + ": LibreHardwareMonitor engine started" + "\r");
+            _LibreHardwareMonitorEngine = true;
             while (_allEngineState != true) Thread.Sleep(100);
             Thread.Sleep(500);
 
@@ -162,17 +162,17 @@ namespace GreenIT.Service
             while (_stopEngineSignal == false)
             {
                 _mutex.WaitOne();
-                Console.WriteLine("[INFO] " + DateTime.Now.ToString() + ": Working on OpenHardwareMonitor engine" + "\r");
+                Console.WriteLine("[INFO] " + DateTime.Now.ToString() + ": Working on LibreHardwareMonitor engine" + "\r");
 
                 List<string> lines = new();
                 Match lineMatch;
-                JsonObject consumption = OpenHardwareMonitorModel.GetConsumption();
+                JsonObject consumption = LibreHardwareMonitorModel.GetConsumption();
                 JsonObject data = new()
                 {
                     { "CONSUMPTION", "0" },
                     { "UPTIME", "0" }
                 };
-                string regex = @"""(?<DATE>" + DateTime.Now.ToString("yyyy-MM-dd") + @")"": {""CONSUMPTION"":""(?<CONSUMPTION>[\s\S]+?)"",""UPTIME"":""(?<UPTIME>[0-9]+)""},";
+               /* string regex = @"""(?<DATE>" + DateTime.Now.ToString("yyyy-MM-dd") + @")"": {""CONSUMPTION"":""(?<CONSUMPTION>[\s\S]+?)"",""UPTIME"":""(?<UPTIME>[0-9]+)""},";
 
                 if (consumption != null)
                 {
@@ -229,7 +229,7 @@ namespace GreenIT.Service
 
                     if (DateTime.Now >= uploadTime)
                     {
-                        Console.WriteLine("[INFO] " + DateTime.Now.ToString() + ": OpenHardwareMonitor module is writing logs..." + "\r");
+                        Console.WriteLine("[INFO] " + DateTime.Now.ToString() + ": LibreHardwareMonitor module is writing logs..." + "\r");
                         bool todayLineExist = false;
                         for (int i = 0; i < lines.Count; i++)
                         {
@@ -254,9 +254,9 @@ namespace GreenIT.Service
                     }
                     _mutex.ReleaseMutex();
                     Thread.Sleep(int.Parse(_config["COLLECT_INFO_PERIOD"].ToString()) * 1000);
-                }
+                }*/
             }
-            _openHardwareMonitorEngine = false;
+            _LibreHardwareMonitorEngine = false;
         }
 
         public void Stop()
@@ -265,11 +265,11 @@ namespace GreenIT.Service
 
             Console.WriteLine("[INFO] " + DateTime.Now.ToString() + ": Stopping engines" + "\r");
             _service.CancelAsync();
-            _openHardwareMonitor.CancelAsync();
+            _LibreHardwareMonitor.CancelAsync();
             while (
                 (_serviceEngine != true) &&
                 (_saveEngine != true) &&
-                (_openHardwareMonitorEngine == true)
+                (_LibreHardwareMonitorEngine == true)
                 ) Thread.Sleep(1000);
             Thread.Sleep(1000);
 
