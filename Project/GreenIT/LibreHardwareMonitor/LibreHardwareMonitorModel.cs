@@ -24,7 +24,7 @@ namespace GreenIT.LibreHardwareMonitor
                         if (sensor.Value > 50000) consumption.Add("CONSUMPTION", "VM detected");
                         else
                         {
-                            consumption.Add("CONSUMPTION", sensor.Value.ToString());
+                            consumption.Add("CONSUMPTION", sensor.Value.ToString().Replace(",", "."));
                         }
                     }
                 }
