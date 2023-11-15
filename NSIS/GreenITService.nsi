@@ -15,14 +15,14 @@ SetCompressor lzma
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
-Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "C:\Users\developpeur\Downloads\GreenITService_Installer.exe"
+Name "${PRODUCT_NAME}"
+OutFile "GreenITService_Installer.exe"
 InstallDir "$PROGRAMFILES\GreenIT Service"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
-ShowInstDetails show
-ShowUnInstDetails show
+ShowInstDetails hide
+ShowUnInstDetails hide
 
-; Vairables
+# Vairables
 Var Dialog
 Var COLLECT_INFO_PERIOD_Label
 Var COLLECT_INFO_PERIOD
@@ -222,7 +222,8 @@ Function InstallService
          ExecWait '"$INSTDIR\GreenIT.exe" install'
 FunctionEnd
 
-Function StartService
+Function StartOrRestartService
+         ExecWait '"$INSTDIR\GreenIT.exe" stop'
          ExecWait '"$INSTDIR\GreenIT.exe" start'
 FunctionEnd
 
@@ -270,7 +271,7 @@ Section "Main" SEC01
          File "..\README.md"
          File "..\LICENSE.txt"
          Call InstallService
-         Call StartService
+         Call StartOrRestartService
 SectionEnd
 
 #####################################################################
@@ -323,9 +324,9 @@ Function UploadConfig
          Exch $R0
          ${GetOptions} $R0 "/collectPeriod=" $R1
          StrCpy $0 $R1
-         ${GetOptions} $R0 "/collectPeriod=" $R1
+         ${GetOptions} $R0 "/uploadPeriod=" $R1
          StrCpy $1 $R1
-         ${GetOptions} $R0 "/collectPeriod=" $R1
+         ${GetOptions} $R0 "/savesPeriod=" $R1
          StrCpy $2 $R1
          nsJSON::Set /file `$INSTDIR\config.json`
          nsJSON::Set `COLLECT_INFO_PERIOD` /value `"$0"`
@@ -347,7 +348,7 @@ Section -Post
          WriteUninstaller "$INSTDIR\uninstall.exe"
          WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\GreenIT.exe"
          WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
-         WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
+         WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninstall.exe"
          WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\GreenIT.exe"
          WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
          WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
@@ -510,12 +511,13 @@ Function un.onInit
          Abort
 FunctionEnd
 
-Function un.StopService
+Function un.StopAndUninstallService
+         ExecWait '"$INSTDIR\GreenIT.exe" stop'
          ExecWait '"$INSTDIR\GreenIT.exe" uninstall'
 FunctionEnd
 
 Section Uninstall
-         Call un.StopService
+         Call un.StopAndUninstallService
          Delete "$INSTDIR\${PRODUCT_NAME}.url"
          Delete "$INSTDIR\uninstall.exe"
          Delete "$INSTDIR\LICENSE.txt"
@@ -565,9 +567,6 @@ Function un.onUninstSuccess
          HideWindow
          Call un.GetParameters
          Exch $R0
-         ${un.GetOptions} $R0 "/silent" $R1
-         IfErrors +2 0
-         SetSilent silent
-         IfErrors 0 +2
+         IfSilent +2 0
          MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) was successfully uninstalled."
 FunctionEnd
