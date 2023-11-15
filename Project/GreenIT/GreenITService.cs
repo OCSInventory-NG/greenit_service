@@ -172,7 +172,7 @@ namespace GreenIT.Service
                     { "CONSUMPTION", "0" },
                     { "UPTIME", "0" }
                 };
-               /* string regex = @"""(?<DATE>" + DateTime.Now.ToString("yyyy-MM-dd") + @")"": {""CONSUMPTION"":""(?<CONSUMPTION>[\s\S]+?)"",""UPTIME"":""(?<UPTIME>[0-9]+)""},";
+               string regex = @"""(?<DATE>" + DateTime.Now.ToString("yyyy-MM-dd") + @")"": {""CONSUMPTION"":""(?<CONSUMPTION>[\s\S]+?)"",""UPTIME"":""(?<UPTIME>[0-9]+)""},";
 
                 if (consumption != null)
                 {
@@ -254,7 +254,7 @@ namespace GreenIT.Service
                     }
                     _mutex.ReleaseMutex();
                     Thread.Sleep(int.Parse(_config["COLLECT_INFO_PERIOD"].ToString()) * 1000);
-                }*/
+                }
             }
             _LibreHardwareMonitorEngine = false;
         }
