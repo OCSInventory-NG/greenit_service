@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>GreenIT.GreenITMain</StartupObject>
-    <ApplicationIcon>ocs-icon.ico</ApplicationIcon>
+    <ApplicationIcon>greenit.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,12 +22,12 @@
     <Content Include="config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ocs-icon.ico" />
+    <Content Include="greenit.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ini-parser" Version="2.5.2" />
-    <PackageReference Include="LibreHardwareMonitorLibCore" Version="1.0.3" />
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.2" />
     <PackageReference Include="Topshelf" Version="4.3.0" />
   </ItemGroup>
 
