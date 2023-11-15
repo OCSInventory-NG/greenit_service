@@ -76,14 +76,14 @@ Function GetParameters
          StrCpy $R1 '"'
          Goto loop
          StrCpy $R1 " "
-         
+
 loop:
          IntOp $R2 $R2 + 1
          StrCpy $R0 $CMDLINE 1 $R2
          StrCmp $R0 $R1 get
          StrCmp $R2 $R3 get
          Goto loop
-         
+
 get:
          IntOp $R2 $R2 + 1
          StrCpy $R0 $CMDLINE 1 $R2
@@ -249,21 +249,18 @@ Section "Main" SEC01
          File "..\Project\GreenIT\bin\Release\net6.0\Microsoft.Win32.SystemEvents.dll"
          File "..\Project\GreenIT\bin\Release\net6.0\System.Management.dll"
          SetOutPath "$INSTDIR\runtimes\win\lib\netstandard2.0"
-         File "..\Project\GreenIT\bin\Release\net6.0\runtimes\win\lib\netstandard2.0\System.IO.Ports.dll"
          File "..\Project\GreenIT\bin\Release\net6.0\runtimes\win\lib\netstandard2.0\System.ServiceProcess.ServiceController.dll"
          SetOutPath "$INSTDIR\runtimes\win\lib\netcoreapp2.0"
          File "..\Project\GreenIT\bin\Release\net6.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.EventLog.dll"
-         File "..\Project\GreenIT\bin\Release\net6.0\runtimes\win\lib\netcoreapp2.0\System.Management.dll"
          SetOutPath "$INSTDIR\runtimes\win\lib\netcoreapp3.0"
          File "..\Project\GreenIT\bin\Release\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll"
          SetOutPath "$INSTDIR"
          File "..\Project\GreenIT\bin\Release\net6.0\System.ServiceProcess.ServiceController.dll"
          File "..\Project\GreenIT\bin\Release\net6.0\GreenIT.deps.json"
-         File "..\Project\GreenIT\bin\Release\net6.0\HidLibrary.dll"
          File "..\Project\GreenIT\bin\Release\net6.0\TopShelf.ServiceInstaller.dll"
          File "..\Project\GreenIT\bin\Release\net6.0\System.CodeDom.dll"
          File "..\Project\GreenIT\bin\Release\net6.0\GreenIT.runtimeconfig.json"
-         File "..\Project\GreenIT\bin\Release\net6.0\OpenHardwareMonitorLib.dll"
+         File "..\Project\GreenIT\bin\Release\net6.0\LibreHardwareMonitorLib.dll"
          File "..\Project\GreenIT\bin\Release\net6.0\GreenIT.pdb"
          File "..\Project\GreenIT\bin\Release\net6.0\GreenIT.dll"
          File "..\Project\GreenIT\bin\Release\net6.0\Topshelf.dll"
@@ -373,14 +370,14 @@ Function un.GetParameters
          StrCpy $R1 '"'
          Goto loop
          StrCpy $R1 " "
-         
+
 loop:
          IntOp $R2 $R2 + 1
          StrCpy $R0 $CMDLINE 1 $R2
          StrCmp $R0 $R1 get
          StrCmp $R2 $R3 get
          Goto loop
-         
+
 get:
          IntOp $R2 $R2 + 1
          StrCpy $R0 $CMDLINE 1 $R2
@@ -525,18 +522,15 @@ Section Uninstall
          Delete "$INSTDIR\Topshelf.dll"
          Delete "$INSTDIR\GreenIT.dll"
          Delete "$INSTDIR\GreenIT.pdb"
-         Delete "$INSTDIR\OpenHardwareMonitorLib.dll"
+         Delete "$INSTDIR\LibreHardwareMonitorLib.dll"
          Delete "$INSTDIR\GreenIT.runtimeconfig.json"
          Delete "$INSTDIR\System.CodeDom.dll"
          Delete "$INSTDIR\TopShelf.ServiceInstaller.dll"
-         Delete "$INSTDIR\HidLibrary.dll"
          Delete "$INSTDIR\GreenIT.deps.json"
          Delete "$INSTDIR\System.ServiceProcess.ServiceController.dll"
          Delete "$INSTDIR\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll"
-         Delete "$INSTDIR\runtimes\win\lib\netcoreapp2.0\System.Management.dll"
          Delete "$INSTDIR\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.EventLog.dll"
          Delete "$INSTDIR\runtimes\win\lib\netstandard2.0\System.ServiceProcess.ServiceController.dll"
-         Delete "$INSTDIR\runtimes\win\lib\netstandard2.0\System.IO.Ports.dll"
          Delete "$INSTDIR\System.Management.dll"
          Delete "$INSTDIR\Microsoft.Win32.SystemEvents.dll"
          Delete "$INSTDIR\System.IO.Ports.dll"
