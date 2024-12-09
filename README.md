@@ -16,7 +16,7 @@
 
 Currently supported on Windows, this service is made to gather power consumption information.
 
-> _**IMPORTANT NOTE : This service is required if you use GreenIT Plugin downloadable <a href="https://github.com/Atineon/ocsinventory-plugin_greenit">here</a>**_
+> _**IMPORTANT NOTE : This service is required if you use GreenIT Plugin downloadable <a href="https://github.com/PluginsOCSInventory-NG/greenit">here</a>**_
 
 ## Prerequisites
 
