@@ -65,4 +65,4 @@ And yes, that's all :-)
 
 ## For developers
 
-All the documentation for developers can be found [here](https://github.com/OCSInventory-NG/Wiki/tree/master/english/04.Management-console-and-its-advanced-features/GreenIT-service-developers.md)
+All the documentation for developers can be found [here](https://github.com/OCSInventory-NG/Wiki/blob/add_greenit/english/15.GreenIT/index.md)
