@@ -28,7 +28,7 @@ Currently supported on Windows, this service is made to gather power consumption
 
 To install the service on your agents :
 
-- Download the service <a href="https://github.com/Atineon/ocsinventory-service_greenit/releases/">here</a> to get the executable and start it.
+- Download the service <a href="https://github.com/OCSInventory-NG/greenit_service/releases/">here</a> to get the executable and start it.
 
 - Go to the config page :
 
