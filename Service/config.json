@@ -1,0 +1,11 @@
+{
+  "collect": {
+    "period": 1
+  },
+  "writing": {
+    "period": 0
+  },
+  "backup": {
+    "period": 1
+  }
+}
