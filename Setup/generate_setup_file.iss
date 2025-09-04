@@ -3,7 +3,8 @@
 #define AppPublisher "FactorFX"
 #define AppURL "https://factorfx.com/"
 #define AppExeName "Service.exe"
-#define AppPath "C:\Users\antoi\OneDrive\Documents\Git\GreenIT\GreenIT\Service\bin\Release\net8.0\"
+#define AppPath "\path\to\generated\service\binary"
+; from source directory: **\Service\bin\Release\net8.0\ 
 
 [Setup]
 AppId={{81BEA8FD-0E67-4831-B6D7-198603933A19}
@@ -18,9 +19,9 @@ UninstallDisplayIcon={app}\{#AppExeName}
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
-LicenseFile=C:\Users\antoi\OneDrive\Documents\Git\GreenIT\GreenIT\LICENSE.txt
+LicenseFile=..\LICENSE.txt
 OutputBaseFilename=GreenIT Service setup
-SetupIconFile=C:\Users\antoi\OneDrive\Documents\Git\GreenIT\GreenIT\Setup\greenit.ico
+SetupIconFile=greenit.ico
 SolidCompression=yes
 WizardStyle=modern
 
