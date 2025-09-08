@@ -61,15 +61,15 @@ begin
     Log(ExpandConstant('{cm:RunningInInteractiveMode}'));
     InputPage := CreateInputQueryPage(wpSelectDir, ExpandConstant('{cm:ServiceConfigurationPageTitle}'), ExpandConstant('{cm:ServiceConfigurationPageDescription}'), '');
     
-    InputPage.Add('Period between collecting information (in seconds):', False);
-    InputPage.Add('Period between data is written in data file (in minutes):', False);
-    InputPage.Add('Period between data is written in bakcup file (in hours):', False);
+    InputPage.Add(ExpandConstant('{cm:CollectPeriodDescription}'), False);
+    InputPage.Add(ExpandConstant('{cm:WritingPeriodDescription}'), False);
+    InputPage.Add(ExpandConstant('{cm:BackupPeriodDescription}'), False);
     
     InputPage.Values[0] := '1';
     InputPage.Values[1] := '0';
     InputPage.Values[2] := '1';
     
-    RunNowPage := CreateCustomPage(InputPage.ID, 'Service configuration', 'Would you like to run the service now ?');
+    RunNowPage := CreateCustomPage(InputPage.ID, ExpandConstant('{cm:ServiceConfigurationPageTitle}'), ExpandConstant('{cm:ServiceConfigurationPageDescription}'));
     
     RunNowCheckBox := TNewCheckBox.Create(RunNowPage);
     RunNowCheckBox.Parent := RunNowPage.Surface;
@@ -196,6 +196,9 @@ RunningInSilentMode=Running in silent mode...
 RunningInInteractiveMode=Running in interactive mode...
 ServiceConfigurationPageTitle=Service Configuration
 ServiceConfigurationPageDescription=Please enter the configuration parameters for the service.
+CollectPeriodDescription=Period between collecting information (in seconds):
+WritingPeriodDescription=Period between data is written in data file (in minutes):
+BackupPeriodDescription=Period between data is written in bakcup file (in hours):
 WaitingUserToEnterInputs=Waiting for user to enter inputs...
 InputValidated=Input validated: collect period=%s seconds, writing period=%s minutes, backup period=%s hours.
 JONConfigurationWritten=JSON configuration file written successfully.
@@ -212,6 +215,9 @@ french.RunningInSilentMode=Exécution en mode silencieux...
 french.RunningInInteractiveMode=Exécution en mode interactif...
 french.ServiceConfigurationPageTitle=Configuration du service
 french.ServiceConfigurationPageDescription=Veuillez entrer les paramètres de configuration pour le service.
+french.CollectPeriodDescription=Période entre chaque collecte d'informations (en secondes) :
+french.WritingPeriodDescription=Période entre chaque écriture des données dans le fichier (en minutes) :
+french.BackupPeriodDescription=Période entre chaque écriture des données dans le fichier de sauvegarde (en heures) :
 french.WaitingUserToEnterInputs=En attente que l'utilisateur saisisse les entrées...
 french.InputValidated=Entrée validée : période de collecte=%s secondes, période d'écriture=%s minutes, période de sauvegarde=%s heures.
 french.JONConfigurationWritten=Fichier de configuration JSON écrit avec succès.
