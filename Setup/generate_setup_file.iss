@@ -47,6 +47,11 @@ var
   ResultCode: Integer;
 
 procedure InitializeWizard;
+if WizardSilent then
+begin
+
+end
+else
 begin
   ConfigPath := ExpandConstant('{commonappdata}\GreenIT\config.json');
   InputPage := CreateInputQueryPage(wpInstalling, 'Service configuration', 'Please specify your own service settings.', '');
@@ -76,7 +81,13 @@ external 'JSONWriteInteger@files:jsonconfig.dll stdcall';
 function NextButtonClick(CurPageID: Integer): Boolean;
 begin
   Result := True;
-  
+
+  if WizardSilent then
+  begin
+    Exit;
+  end
+  else
+  begin
   if CurPageID = InputPage.ID then
   begin    
     if InputPage.Values[0] = '' then
@@ -94,14 +105,6 @@ begin
       MsgBox('Error: No value on backup period input', mbError, MB_OK);
       Result := False;
     end;
-    
-    CollectPeriod := StrToInt64Def(InputPage.Values[0], 1);
-    WritingPeriod := StrToInt64Def(InputPage.Values[1], 0);
-    BackupPeriod := StrToInt64Def(InputPage.Values[2], 1);
-    
-    JSONWriteInteger(ConfigPath, 'collect', 'period', CollectPeriod);
-    JSONWriteInteger(ConfigPath, 'writing', 'period', WritingPeriod);
-    JSONWriteInteger(ConfigPath, 'backup', 'period', BackupPeriod);
   end;
   
   if CurPageID = RunNowPage.ID then
@@ -111,8 +114,29 @@ begin
       Exec('sc.exe', 'create "GreenIT Service" binpath= "C:\Program Files\GreenIT Service\Service.exe" start= "auto"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
       Exec('sc.exe', 'description "GreenIT Service" "Collect consumption information for OCSInventory GreenIT plugin."', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
       Exec('sc.exe', 'start "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-    end
+    end;
   end;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssPostInstall then
+    begin
+      if WizardSilent then
+    begin
+      CollectPeriod := StrToInt64Def(ExpandConstant('{param:collectperiod}'), 1);
+      WritingPeriod := StrToInt64Def(ExpandConstant('{param:writingperiod}'), 0);
+      BackupPeriod := StrToInt64Def(ExpandConstant('{param:backupperiod}'), 1);
+    end
+    else
+    begin
+      CollectPeriod := StrToInt64Def(InputPage.Values[0], 1);
+      WritingPeriod := StrToInt64Def(InputPage.Values[1], 0);
+      BackupPeriod := StrToInt64Def(InputPage.Values[2], 1);
+    end;
+    JSONWriteInteger(ConfigPath, 'collect', 'period', CollectPeriod);
+    JSONWriteInteger(ConfigPath, 'writing', 'period', WritingPeriod);
+    JSONWriteInteger(ConfigPath, 'backup', 'period', BackupPeriod);
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
