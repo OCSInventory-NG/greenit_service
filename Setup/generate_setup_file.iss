@@ -48,14 +48,16 @@ var
 
 procedure InitializeWizard;
 begin
+  Log(ExpandConstant('{cm:StartingGreenITSetup}'));
   ConfigPath := ExpandConstant('{commonappdata}\GreenIT\config.json');
   if WizardSilent then
   begin
-    Log("test");
+    Log(ExpandConstant('{cm:RunningInSilentMode}'));
   end
   else
   begin
-    InputPage := CreateInputQueryPage(wpSelectDir, 'Service configuration', 'Please specify your own service settings.', '');
+    Log(ExpandConstant('{cm:RunningInInteractiveMode}'));
+    InputPage := CreateInputQueryPage(wpSelectDir, ExpandConstant('{cm:ServiceConfigurationPageTitle}'), ExpandConstant('{cm:ServiceConfigurationPageDescription}'), '');
     
     InputPage.Add('Period between collecting information (in seconds):', False);
     InputPage.Add('Period between data is written in data file (in minutes):', False);
@@ -74,6 +76,8 @@ begin
     RunNowCheckBox.Width := RunNowPage.SurfaceWidth;
     RunNowCheckBox.Caption := 'Run the service now';
     RunNowCheckBox.Checked := True;
+
+    Log(ExpandConstant('{cm:WaitingUserToEnterInputs}'));
   end;
 end;
 
@@ -106,6 +110,10 @@ begin
       begin
         MsgBox('Error: No value on backup period input', mbError, MB_OK);
         Result := False;
+      end
+      else
+      begin
+        Log(Format(ExpandConstant('{cm:InputValidated}'), [InputPage.Values[0], InputPage.Values[1], InputPage.Values[1]]));
       end;
     end;
   end;
@@ -132,19 +140,28 @@ begin
     JSONWriteInteger(ConfigPath, 'writing', 'period', WritingPeriod);
     JSONWriteInteger(ConfigPath, 'backup', 'period', BackupPeriod);
 
+    Log(ExpandConstant('{cm:JONConfigurationWritten}'));
+
+    Log(ExpandConstant('{cm:InstallingService}'));
+
     Exec('sc.exe', 'create "GreenIT Service" binpath= "C:\Program Files\GreenIT Service\Service.exe" start= "auto"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
     Exec('sc.exe', 'description "GreenIT Service" "Collect consumption information for OCSInventory GreenIT plugin."', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    Log(ExpandConstant('{cm:ServiceInstalled}'));
     if WizardSilent then
     begin
+      Log(ExpandConstant('{cm:StartingService}'));
       Exec('sc.exe', 'start "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
     end
     else
     begin
       if RunNowCheckBox.Checked then
       begin
+        Log(ExpandConstant('{cm:StartingService}'));
         Exec('sc.exe', 'start "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
       end;
     end;
+    Log(ExpandConstant('{cm:ServiceStarted}'));
+    Log(ExpandConstant('{cm:SetupCompleted}'));
   end;
 end;
 
@@ -152,8 +169,54 @@ procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin
   if CurUninstallStep = usUninstall then
   begin
-    Exec('sc.exe', 'stop "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-    Sleep(2000);
-    Exec('sc.exe', 'delete "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    if Exec('sc.exe', 'stop "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+    begin
+      if Exec('sc.exe', 'delete "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+      begin
+        Log(ExpandConstant('{cm:ServiceDeletedSuccessfully}'));
+      end
+      else
+      begin
+        MsgBox(ExpandConstant('{cm:ServiceDeleteFailed}'), mbError, MB_OK);
+      end;
+    end
+    else
+    begin
+      MsgBox(ExpandConstant('{cm:ServiceDeleteFailed}'), mbError, MB_OK);
+    end;
   end;
 end;
+
+
+[CustomMessages]
+StartingGreenITSetup=Starting GreenIT Service setup...
+RunningInSilentMode=Running in silent mode...
+RunningInInteractiveMode=Running in interactive mode...
+ServiceConfigurationPageTitle=Service Configuration
+ServiceConfigurationPageDescription=Please enter the configuration parameters for the service.
+WaitingUserToEnterInputs=Waiting for user to enter inputs...
+InputValidated=Input validated: collect period=%s seconds, writing period=%s minutes, backup period=%s hours.
+JONConfigurationWritten=JSON configuration file written successfully.
+InstallingService=Installing the Windows service...
+ServiceInstalled=Windows service installed successfully.
+StartingService=Starting the Windows service...
+ServiceStarted=Windows service started successfully.
+SetupCompleted=Setup completed successfully.
+ServiceDeletedSuccessfully=Windows service deleted successfully.
+ServiceDeleteFailed=Failed to delete the Windows service. Please stop it manually and try again.
+
+french.StartingGreenITSetup=Démarrage de l'installation du service GreenIT...
+french.RunningInSilentMode=Exécution en mode silencieux...
+french.RunningInInteractiveMode=Exécution en mode interactif...
+french.ServiceConfigurationPageTitle=Configuration du service
+french.ServiceConfigurationPageDescription=Veuillez entrer les paramètres de configuration pour le service.
+french.WaitingUserToEnterInputs=En attente que l'utilisateur saisisse les entrées...
+french.InputValidated=Entrée validée : période de collecte=%s secondes, période d'écriture=%s minutes, période de sauvegarde=%s heures.
+french.JONConfigurationWritten=Fichier de configuration JSON écrit avec succès.
+french.InstallingService=Installation du service Windows...
+french.ServiceInstalled=Service Windows installé avec succès.
+french.StartingService=Démarrage du service Windows...
+french.ServiceStarted=Service Windows démarré avec succès.
+french.SetupCompleted=Installation terminée avec succès.
+french.ServiceDeletedSuccessfully=Service Windows supprimé avec succès.
+french.ServiceDeleteFailed=Échec de la suppression du service Windows. Veuillez l'arrêter manuellement et réessayer.
