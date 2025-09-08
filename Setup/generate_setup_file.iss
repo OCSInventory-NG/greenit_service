@@ -55,7 +55,7 @@ begin
   else
   begin
     ConfigPath := ExpandConstant('{commonappdata}\GreenIT\config.json');
-    InputPage := CreateInputQueryPage(wpLicence, 'Service configuration', 'Please specify your own service settings.', '');
+    InputPage := CreateInputQueryPage(wpLicense, 'Service configuration', 'Please specify your own service settings.', '');
     
     InputPage.Add('Period between collecting information (in seconds):', False);
     InputPage.Add('Period between data is written in data file (in minutes):', False);
