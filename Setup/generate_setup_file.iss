@@ -22,7 +22,9 @@ DisableProgramGroupPage=yes
 LicenseFile=..\LICENSE.txt
 OutputBaseFilename=GreenIT-Service-setup-{#AppVersion}
 SetupIconFile=greenit.ico
+SetupLogging=yes
 SolidCompression=yes
+UninstallLogging=yes
 WizardStyle=modern
 
 [Languages]
