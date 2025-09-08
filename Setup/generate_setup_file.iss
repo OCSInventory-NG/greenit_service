@@ -48,13 +48,13 @@ var
 
 procedure InitializeWizard;
 begin
+  ConfigPath := ExpandConstant('{commonappdata}\GreenIT\config.json');
   if WizardSilent then
   begin
     Log("test");
   end
   else
   begin
-    ConfigPath := ExpandConstant('{commonappdata}\GreenIT\config.json');
     InputPage := CreateInputQueryPage(wpSelectDir, 'Service configuration', 'Please specify your own service settings.', '');
     
     InputPage.Add('Period between collecting information (in seconds):', False);
@@ -117,9 +117,9 @@ begin
   begin
     if WizardSilent then
     begin
-      CollectPeriod := StrToInt64Def(ExpandConstant('{param:collectperiod}'), 1);
-      WritingPeriod := StrToInt64Def(ExpandConstant('{param:writingperiod}'), 0);
-      BackupPeriod := StrToInt64Def(ExpandConstant('{param:backupperiod}'), 1);
+      CollectPeriod := StrToInt64Def(ExpandConstant('{param:COLLECT_PERIOD}'), 1);
+      WritingPeriod := StrToInt64Def(ExpandConstant('{param:WRITING_PERIOD}'), 0);
+      BackupPeriod := StrToInt64Def(ExpandConstant('{param:BACKUP_PERIOD}'), 1);
     end
     else
     begin
@@ -127,16 +127,23 @@ begin
       WritingPeriod := StrToInt64Def(InputPage.Values[1], 0);
       BackupPeriod := StrToInt64Def(InputPage.Values[2], 1);
     end;
-    
+
     JSONWriteInteger(ConfigPath, 'collect', 'period', CollectPeriod);
     JSONWriteInteger(ConfigPath, 'writing', 'period', WritingPeriod);
     JSONWriteInteger(ConfigPath, 'backup', 'period', BackupPeriod);
 
-    if RunNowCheckBox.Checked = True then
+    Exec('sc.exe', 'create "GreenIT Service" binpath= "C:\Program Files\GreenIT Service\Service.exe" start= "auto"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    Exec('sc.exe', 'description "GreenIT Service" "Collect consumption information for OCSInventory GreenIT plugin."', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    if WizardSilent then
     begin
-      Exec('sc.exe', 'create "GreenIT Service" binpath= "C:\Program Files\GreenIT Service\Service.exe" start= "auto"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-      Exec('sc.exe', 'description "GreenIT Service" "Collect consumption information for OCSInventory GreenIT plugin."', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
       Exec('sc.exe', 'start "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    end
+    else
+    begin
+      if RunNowCheckBox.Checked then
+      begin
+        Exec('sc.exe', 'start "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+      end;
     end;
   end;
 end;
