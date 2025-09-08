@@ -17,5 +17,16 @@ Currently supported on Windows, this service is made to gather power consumption
 
 > _**IMPORTANT NOTE :  This service is required if you use GreenIT Plugin downloadable <a href="https://github.com/PluginsOCSInventory-NG/greenit/releases" target="_blank">here</a>**_
 
+<font color="red">
+
+> ***Known issue**: Concerning the EDR detection, the library we use to get consumption data (LibreHardwareMonitor) might have an intrusive behavior, whitelisting the process and its file is recommended.*
+
+</font>
+
 ## Installation
+
+> ***IMPORTANT NOTE**: You'll need to download .NET **AND** ASP .NET runtime version 8.0.19 or upper to make the service working!*
+
 There is a documentation to help you to clearly install the plugin and his dependencies available <a href="https://github.com/OCSInventory-NG/Wiki/blob/master/english/15.GreenIT/index.md" target="_blank">here</a>.
+
+
