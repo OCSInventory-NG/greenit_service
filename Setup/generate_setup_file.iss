@@ -106,16 +106,6 @@ begin
       Result := False;
     end;
   end;
-  
-  if CurPageID = RunNowPage.ID then
-  begin
-    if RunNowCheckBox.Checked = True then
-    begin
-      Exec('sc.exe', 'create "GreenIT Service" binpath= "C:\Program Files\GreenIT Service\Service.exe" start= "auto"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-      Exec('sc.exe', 'description "GreenIT Service" "Collect consumption information for OCSInventory GreenIT plugin."', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-      Exec('sc.exe', 'start "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-    end;
-  end;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
@@ -137,6 +127,17 @@ begin
     JSONWriteInteger(ConfigPath, 'collect', 'period', CollectPeriod);
     JSONWriteInteger(ConfigPath, 'writing', 'period', WritingPeriod);
     JSONWriteInteger(ConfigPath, 'backup', 'period', BackupPeriod);
+  end;
+
+  if CurStep = RunNowPage.ID then
+  begin
+    if RunNowCheckBox.Checked = True then
+    begin
+      Exec('sc.exe', 'create "GreenIT Service" binpath= "C:\Program Files\GreenIT Service\Service.exe" start= "auto"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+      Exec('sc.exe', 'description "GreenIT Service" "Collect consumption information for OCSInventory GreenIT plugin."', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+      Exec('sc.exe', 'start "GreenIT Service"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    end;
+  end;
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
