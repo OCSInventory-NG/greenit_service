@@ -1,5 +1,5 @@
 #define AppName "GreenIT Service"
-#define AppVersion "1.0"
+#define AppVersion "2.0"
 #define AppPublisher "FactorFX"
 #define AppURL "https://factorfx.com/"
 #define AppExeName "Service.exe"
@@ -20,7 +20,7 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
 LicenseFile=..\LICENSE.txt
-OutputBaseFilename=GreenIT Service setup
+OutputBaseFilename=GreenIT-Service-setup-{#AppVersion}
 SetupIconFile=greenit.ico
 SolidCompression=yes
 WizardStyle=modern
@@ -55,7 +55,7 @@ begin
   else
   begin
     ConfigPath := ExpandConstant('{commonappdata}\GreenIT\config.json');
-    InputPage := CreateInputQueryPage(wpInstalling, 'Service configuration', 'Please specify your own service settings.', '');
+    InputPage := CreateInputQueryPage(wpLicence, 'Service configuration', 'Please specify your own service settings.', '');
     
     InputPage.Add('Period between collecting information (in seconds):', False);
     InputPage.Add('Period between data is written in data file (in minutes):', False);
