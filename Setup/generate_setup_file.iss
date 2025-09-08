@@ -76,7 +76,7 @@ begin
     RunNowCheckBox.Top := 0;
     RunNowCheckBox.Left := 0;
     RunNowCheckBox.Width := RunNowPage.SurfaceWidth;
-    RunNowCheckBox.Caption := 'Run the service now';
+    RunNowCheckBox.Caption := ExpandConstant('{cm:StartingServiceDescription}');
     RunNowCheckBox.Checked := True;
 
     Log(ExpandConstant('{cm:WaitingUserToEnterInputs}'));
@@ -199,6 +199,7 @@ ServiceConfigurationPageDescription=Please enter the configuration parameters fo
 CollectPeriodDescription=Period between collecting information (in seconds):
 WritingPeriodDescription=Period between data is written in data file (in minutes):
 BackupPeriodDescription=Period between data is written in bakcup file (in hours):
+StartingServiceDescription=Start the service now
 WaitingUserToEnterInputs=Waiting for user to enter inputs...
 InputValidated=Input validated: collect period=%s seconds, writing period=%s minutes, backup period=%s hours.
 JONConfigurationWritten=JSON configuration file written successfully.
@@ -218,6 +219,7 @@ french.ServiceConfigurationPageDescription=Veuillez entrer les paramètres de co
 french.CollectPeriodDescription=Période entre chaque collecte d'informations (en secondes) :
 french.WritingPeriodDescription=Période entre chaque écriture des données dans le fichier (en minutes) :
 french.BackupPeriodDescription=Période entre chaque écriture des données dans le fichier de sauvegarde (en heures) :
+french.StartingServiceDescription=Démarrer le service maintenant
 french.WaitingUserToEnterInputs=En attente que l'utilisateur saisisse les entrées...
 french.InputValidated=Entrée validée : période de collecte=%s secondes, période d'écriture=%s minutes, période de sauvegarde=%s heures.
 french.JONConfigurationWritten=Fichier de configuration JSON écrit avec succès.
