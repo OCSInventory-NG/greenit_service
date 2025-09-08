@@ -50,7 +50,7 @@ procedure InitializeWizard;
 begin
   if WizardSilent then
   begin
-
+    Log("test");
   end
   else
   begin
