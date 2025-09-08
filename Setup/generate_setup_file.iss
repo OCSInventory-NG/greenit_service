@@ -47,32 +47,34 @@ var
   ResultCode: Integer;
 
 procedure InitializeWizard;
-if WizardSilent then
 begin
+  if WizardSilent then
+  begin
 
-end
-else
-begin
-  ConfigPath := ExpandConstant('{commonappdata}\GreenIT\config.json');
-  InputPage := CreateInputQueryPage(wpInstalling, 'Service configuration', 'Please specify your own service settings.', '');
-  
-  InputPage.Add('Period between collecting information (in seconds):', False);
-  InputPage.Add('Period between data is written in data file (in minutes):', False);
-  InputPage.Add('Period between data is written in bakcup file (in hours):', False);
-  
-  InputPage.Values[0] := '1';
-  InputPage.Values[1] := '0';
-  InputPage.Values[2] := '1';
-  
-  RunNowPage := CreateCustomPage(InputPage.ID, 'Service configuration', 'Would you like to run the service now ?');
-  
-  RunNowCheckBox := TNewCheckBox.Create(RunNowPage);
-  RunNowCheckBox.Parent := RunNowPage.Surface;
-  RunNowCheckBox.Top := 0;
-  RunNowCheckBox.Left := 0;
-  RunNowCheckBox.Width := RunNowPage.SurfaceWidth;
-  RunNowCheckBox.Caption := 'Run the service now';
-  RunNowCheckBox.Checked := True;
+  end
+  else
+  begin
+    ConfigPath := ExpandConstant('{commonappdata}\GreenIT\config.json');
+    InputPage := CreateInputQueryPage(wpInstalling, 'Service configuration', 'Please specify your own service settings.', '');
+    
+    InputPage.Add('Period between collecting information (in seconds):', False);
+    InputPage.Add('Period between data is written in data file (in minutes):', False);
+    InputPage.Add('Period between data is written in bakcup file (in hours):', False);
+    
+    InputPage.Values[0] := '1';
+    InputPage.Values[1] := '0';
+    InputPage.Values[2] := '1';
+    
+    RunNowPage := CreateCustomPage(InputPage.ID, 'Service configuration', 'Would you like to run the service now ?');
+    
+    RunNowCheckBox := TNewCheckBox.Create(RunNowPage);
+    RunNowCheckBox.Parent := RunNowPage.Surface;
+    RunNowCheckBox.Top := 0;
+    RunNowCheckBox.Left := 0;
+    RunNowCheckBox.Width := RunNowPage.SurfaceWidth;
+    RunNowCheckBox.Caption := 'Run the service now';
+    RunNowCheckBox.Checked := True;
+  end;
 end;
 
 function JSONWriteInteger(FileName, Section, Key: String; Value: Int64): Boolean;
