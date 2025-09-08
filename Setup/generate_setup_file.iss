@@ -90,22 +90,23 @@ begin
   end
   else
   begin
-  if CurPageID = InputPage.ID then
-  begin    
-    if InputPage.Values[0] = '' then
-    begin
-      MsgBox('Error: No value on collect period input', mbError, MB_OK);
-      Result := False;
-    end
-    else if InputPage.Values[1] = '' then
-    begin
-      MsgBox('Error: No value on writing period input', mbError, MB_OK);
-      Result := False;
-    end
-    else if InputPage.Values[2] = '' then
-    begin
-      MsgBox('Error: No value on backup period input', mbError, MB_OK);
-      Result := False;
+    if CurPageID = InputPage.ID then
+    begin    
+      if InputPage.Values[0] = '' then
+      begin
+        MsgBox('Error: No value on collect period input', mbError, MB_OK);
+        Result := False;
+      end
+      else if InputPage.Values[1] = '' then
+      begin
+        MsgBox('Error: No value on writing period input', mbError, MB_OK);
+        Result := False;
+      end
+      else if InputPage.Values[2] = '' then
+      begin
+        MsgBox('Error: No value on backup period input', mbError, MB_OK);
+        Result := False;
+      end;
     end;
   end;
 end;
@@ -113,8 +114,8 @@ end;
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssPostInstall then
-    begin
-      if WizardSilent then
+  begin
+    if WizardSilent then
     begin
       CollectPeriod := StrToInt64Def(ExpandConstant('{param:collectperiod}'), 1);
       WritingPeriod := StrToInt64Def(ExpandConstant('{param:writingperiod}'), 0);
@@ -126,13 +127,11 @@ begin
       WritingPeriod := StrToInt64Def(InputPage.Values[1], 0);
       BackupPeriod := StrToInt64Def(InputPage.Values[2], 1);
     end;
+    
     JSONWriteInteger(ConfigPath, 'collect', 'period', CollectPeriod);
     JSONWriteInteger(ConfigPath, 'writing', 'period', WritingPeriod);
     JSONWriteInteger(ConfigPath, 'backup', 'period', BackupPeriod);
-  end;
 
-  if CurStep = RunNowPage.ID then
-  begin
     if RunNowCheckBox.Checked = True then
     begin
       Exec('sc.exe', 'create "GreenIT Service" binpath= "C:\Program Files\GreenIT Service\Service.exe" start= "auto"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
